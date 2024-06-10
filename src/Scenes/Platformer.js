@@ -7,6 +7,7 @@ class Platformer extends Phaser.Scene {
         this.lastWalkingSoundTime = 0;
         this.PlayerScore = 0;
         this.playercheckpoint = false;
+        this.isOverlappingSign = false; 
     }
 
     init() {
@@ -92,6 +93,36 @@ class Platformer extends Phaser.Scene {
 
         this.groundLayer.setCollisionByProperty({ collides: true });
 
+
+
+        //Turtorial sign text
+        this.tutorialText = this.add.text(100, 100, "Press UP ARROW to jump once or double jump!", {
+            fontSize: '16px',
+            fill: '#ffffff',
+            backgroundColor: null
+        });
+        this.tutorialText.setScrollFactor(0);
+        this.tutorialText.setVisible(false);
+
+
+
+        this.tutorialText2 = this.add.text(100, 100, "Watch out for the TORTA rain!", {
+            fontSize: '16px',
+            fill: '#ffffff',
+            backgroundColor: null
+        });
+        this.tutorialText2.setScrollFactor(0);
+        this.tutorialText2.setVisible(false);
+
+
+        this.tutorialText3 = this.add.text(100, 100, "Press SPACE to pull out UMBRELLA", {
+            fontSize: '16px',
+            fill: '#ffffff',
+            backgroundColor: null
+        });
+        this.tutorialText3.setScrollFactor(0);
+        this.tutorialText3.setVisible(false);
+
       //  this.animatedTiles.init(this.map);
 
         this.coins = this.map.createFromObjects("Objects", {
@@ -131,8 +162,20 @@ class Platformer extends Phaser.Scene {
             frame: 105
         });
 
-        this.sign1 = this.map.createFromObjects("Sign1", {
+        this.sign1 = this.map.createFromObjects("Signs", {
             name: "sign1",
+            key: "tilemap_sheet",
+            frame: 86
+        });
+
+        this.sign2 = this.map.createFromObjects("Signs", {
+            name: "sign2",
+            key: "tilemap_sheet",
+            frame: 86
+        });
+
+        this.sign3 = this.map.createFromObjects("Signs", {
+            name: "sign3",
             key: "tilemap_sheet",
             frame: 86
         });
@@ -158,6 +201,14 @@ class Platformer extends Phaser.Scene {
 
         this.physics.world.enable(this.sign1, Phaser.Physics.Arcade.STATIC_BODY);
         this.sign1Group = this.add.group(this.sign1);
+
+        this.physics.world.enable(this.sign2, Phaser.Physics.Arcade.STATIC_BODY);
+        this.sign2Group = this.add.group(this.sign2);
+
+        this.physics.world.enable(this.sign3, Phaser.Physics.Arcade.STATIC_BODY);
+        this.sign3Group = this.add.group(this.sign3);
+
+
 
 
         my.sprite.player = this.physics.add.sprite(30, 660, "platformer_characters", "tile_0009.png");
@@ -196,10 +247,34 @@ class Platformer extends Phaser.Scene {
         });
 
 
-        this.physics.add.overlap(my.sprite.player, this.sign1Group, (obj1, obj2) => {
-            this.tutorialText.setVisible(true);
-            this.tutorialText.setPosition(player.x - 50, player.y - 50);
+        this.physics.add.overlap(my.sprite.player, this.sign1Group, (player, sign) => {
+            
+            this.isOverlappingSign = true;
+            if (!this.tutorialText.visible) {
+                this.tutorialText.setVisible(true);
+                this.tutorialText.setPosition(player.x + 225 , player.y - 150 );
+            }
         });
+
+        this.physics.add.overlap(my.sprite.player, this.sign2Group, (player, sign) => {
+            
+            this.isOverlappingSign = true;
+            if (!this.tutorialText2.visible) {
+                this.tutorialText2.setVisible(true);
+                this.tutorialText2.setPosition(player.x + 225 , player.y - 150 );
+            }
+        });
+
+        this.physics.add.overlap(my.sprite.player, this.sign3Group, (player, sign) => {
+            
+            this.isOverlappingSign = true;
+            if (!this.tutorialText3.visible) {
+                this.tutorialText3.setVisible(true);
+                this.tutorialText3.setPosition(player.x -50 , player.y - 100);
+            }
+        });
+
+        
 
         this.physics.add.overlap(my.sprite.player, this.waterGroup, this.playerHitWater, null, this);
         this.physics.add.overlap(my.sprite.player, this.spikeGroup, this.playerHitWater, null, this);
@@ -411,6 +486,15 @@ class Platformer extends Phaser.Scene {
             this.time.delayedCall(2000, () => {
                 this.hideShield();
             }, [], this);
+        }
+        
+        // Hide the tutorial text if the player is not overlapping the sign
+        if (!this.isOverlappingSign) {
+            this.tutorialText.setVisible(false);
+            this.tutorialText2.setVisible(false);
+            this.tutorialText3.setVisible(false);
+        } else {
+            this.isOverlappingSign = false; // Reset the flag for the next frame
         }
     }
 }
