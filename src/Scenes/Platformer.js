@@ -117,6 +117,12 @@ class Platformer extends Phaser.Scene {
             frame: 131
         });
 
+        this.sign1 = this.map.createFromObjects("Sign1", {
+            name: "sign1",
+            key: "tilemap_sheet",
+            frame: 86
+        });
+
 
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.coinGroup = this.add.group(this.coins);
@@ -129,6 +135,9 @@ class Platformer extends Phaser.Scene {
 
         this.physics.world.enable(this.flag, Phaser.Physics.Arcade.STATIC_BODY);
         this.flagGroup = this.add.group(this.flag);
+
+        this.physics.world.enable(this.sign1, Phaser.Physics.Arcade.STATIC_BODY);
+        this.sign1Group = this.add.group(this.sign1);
 
 
         my.sprite.player = this.physics.add.sprite(30, 660, "platformer_characters", "tile_0009.png");
@@ -150,6 +159,12 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.setScale(1, 1);
             this.sound.play("coinSound", { volume: 1 });
             this.scene.start("endScreen", { score: this.PlayerScore });
+        });
+
+
+        this.physics.add.overlap(my.sprite.player, this.sign1Group, (obj1, obj2) => {
+            this.tutorialText.setVisible(true);
+            this.tutorialText.setPosition(player.x - 50, player.y - 50);
         });
 
         this.physics.add.overlap(my.sprite.player, this.waterGroup, this.playerHitWater, null, this);
