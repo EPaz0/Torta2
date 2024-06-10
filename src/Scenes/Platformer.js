@@ -6,6 +6,7 @@ class Platformer extends Phaser.Scene {
         this.canDoubleJump = false; 
         this.lastWalkingSoundTime = 0;
         this.PlayerScore = 0;
+        this.playercheckpoint = false;
     }
 
     init() {
@@ -99,6 +100,13 @@ class Platformer extends Phaser.Scene {
             frame: 15
         });
 
+        this.checkpoint = this.map.createFromObjects("Objects", {
+            name: "checkpoint",
+            key: "tilemap_sheet",
+            frame: 111
+        });
+        
+
         this.ravioli = this.map.createFromObjects("Objects", {
             name: "ravioli",
             key: "foodtilemap_sheet",
@@ -133,6 +141,9 @@ class Platformer extends Phaser.Scene {
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.coinGroup = this.add.group(this.coins);
 
+        this.physics.world.enable(this.checkpoint, Phaser.Physics.Arcade.STATIC_BODY);
+        this.checkpointGroup = this.add.group(this.checkpoint);
+
         this.physics.world.enable(this.ravioli, Phaser.Physics.Arcade.STATIC_BODY);
         this.ravioliGroup = this.add.group(this.ravioli);
 
@@ -161,6 +172,10 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.setScale(1, 1);
             this.PlayerScore = 1 + this.PlayerScore;
             this.sound.play("coinSound", { volume: 1 });
+        });
+
+        this.physics.add.overlap(my.sprite.player, this.checkpointGroup, (obj1, obj2) => {
+            this.playercheckpoint = true;
         });
 
         this.physics.add.overlap(my.sprite.player, this.ravioliGroup, (obj1, obj2) => {
@@ -250,18 +265,37 @@ class Platformer extends Phaser.Scene {
         this.sound.play("hurtSound", { volume: 1 });
 
         if (player.scaleX > 3) {
-            this.physics.pause();
-            this.sound.play("playerExplode", { volume: 1 });
-            this.puff = this.add.sprite(player.x, player.y, "explosion03").setScale(0.25).play("puff");
-            this.time.delayedCall(1000, () => this.scene.restart(), [], this);
+            if (this.playercheckpoint == false){
+                this.physics.pause();
+                this.sound.play("playerExplode", { volume: 1 });
+                this.puff = this.add.sprite(player.x, player.y, "explosion03").setScale(0.25).play("puff");
+                console.log(this.playercheckpoint);
+                this.time.delayedCall(1000, () => this.scene.restart(), [], this);
+    
+            }
+            else {
+                player.x = 1265;
+                player.y = 400;
+                my.sprite.player.setScale(1,1);
+            }
         }
     }
 
     playerHitWater(player, water) {
-        this.physics.pause();
-        this.sound.play("playerExplode", { volume: 1 });
-        this.puff = this.add.sprite(player.x, player.y, "explosion03").setScale(0.25).play("puff");
-        this.time.delayedCall(1000, () => this.scene.restart(), [], this);
+        if (this.playercheckpoint == false){
+            this.physics.pause();
+            this.sound.play("playerExplode", { volume: 1 });
+            this.puff = this.add.sprite(player.x, player.y, "explosion03").setScale(0.25).play("puff");
+            console.log(this.playercheckpoint);
+            this.time.delayedCall(1000, () => this.scene.restart(), [], this);
+
+        }
+        else {
+            player.x = 1265;
+            player.y = 400;
+            my.sprite.player.setScale(1,1);
+        }
+        
     }
 
     update() {
