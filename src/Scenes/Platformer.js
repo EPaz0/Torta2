@@ -95,8 +95,14 @@ class Platformer extends Phaser.Scene {
 
         this.coins = this.map.createFromObjects("Objects", {
             name: "coin",
-            key: "tilemap_sheet",
-            frame: 151
+            key: "foodtilemap_sheet",
+            frame: 15
+        });
+
+        this.ravioli = this.map.createFromObjects("Objects", {
+            name: "ravioli",
+            key: "foodtilemap_sheet",
+            frame: 87
         });
 
         this.water = this.map.createFromObjects("Water", {
@@ -113,8 +119,8 @@ class Platformer extends Phaser.Scene {
 
         this.flag = this.map.createFromObjects("Finish", {
             name: "flag",
-            key: "tilemap_sheet",
-            frame: 131
+            key: "foodtilemap_sheet",
+            frame: 105
         });
 
         this.sign1 = this.map.createFromObjects("Sign1", {
@@ -126,6 +132,9 @@ class Platformer extends Phaser.Scene {
 
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.coinGroup = this.add.group(this.coins);
+
+        this.physics.world.enable(this.ravioli, Phaser.Physics.Arcade.STATIC_BODY);
+        this.ravioliGroup = this.add.group(this.ravioli);
 
         this.physics.world.enable(this.water, Phaser.Physics.Arcade.STATIC_BODY);
         this.waterGroup = this.add.group(this.water);
@@ -152,6 +161,16 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.setScale(1, 1);
             this.PlayerScore = 1 + this.PlayerScore;
             this.sound.play("coinSound", { volume: 1 });
+        });
+
+        this.physics.add.overlap(my.sprite.player, this.ravioliGroup, (obj1, obj2) => {
+            obj2.destroy();
+            this.foodCounter = 0;
+            my.sprite.player.setScale(1, 1);
+            this.PlayerScore = 5 + this.PlayerScore;
+            this.sound.play("coinSound", { volume: 1 });
+            this.physics.world.gravity.y = 1000;
+            
         });
 
         this.physics.add.overlap(my.sprite.player, this.flagGroup, (obj1, obj2) => {
