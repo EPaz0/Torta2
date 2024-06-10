@@ -201,11 +201,11 @@ class Platformer extends Phaser.Scene {
 
         my.vfx.walking.stop();
 
+        //Torta 2 Camera
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25);
-        this.cameras.main.setDeadzone(100, 300);
+        this.cameras.main.startFollow(my.sprite.player, true, 0.08, 0.08); // Set the deadzone to 8% of the screen width and height
         this.cameras.main.setZoom(this.SCALE);
-        this.cameras.main.scrollY -= 260;
+        this.cameras.main.setLerp(.1); // Adjust the lerp value for smoother or faster follow
 
         this.createShield();
 
@@ -333,11 +333,15 @@ class Platformer extends Phaser.Scene {
                 this.sound.play("jumping1", { volume: 1 });
                 my.sprite.player.setVelocityY(this.jumpVelocity);
                 this.jumps++;
+                // Smoothly move the camera to the middle of the screen where the player is
+                this.cameras.main.pan(my.sprite.player.x, this.cameras.main.midPoint.y, 500, 'Linear');
             } else if (this.jumps === 1 && this.canDoubleJump) {
                 this.sound.play("jumping2", { volume: 1 });
                 my.sprite.player.setVelocityY(this.jumpVelocity);
                 this.jumps++;
                 this.canDoubleJump = false;
+                // Smoothly move the camera to the middle of the screen where the player is
+                this.cameras.main.pan(my.sprite.player.x, this.cameras.main.midPoint.y, 500, 'Linear');
             }
         }
 
