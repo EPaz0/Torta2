@@ -67,7 +67,7 @@ class Platformer extends Phaser.Scene {
     }
 
     preload() {
-        this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
+       /* this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');*/
     }
 
     create() {
@@ -76,24 +76,22 @@ class Platformer extends Phaser.Scene {
         this.map = this.add.tilemap("platformer-level-1", 18, 18, 3600, 522);
 
         this.tileset = this.map.addTilesetImage("kenny_tilemap_packed", "tilemap_tiles");
-        this.tortaTileset = this.map.addTilesetImage("torta1", "torta_tiles");
-        this.simiTileset = this.map.addTilesetImage("drsimi", "simi_tiles");
+        this.foodtileset = this.map.addTilesetImage("foodtilemap_packed", "foodtilemap_packed");
+
         this.bgLayer = this.map.createLayer("background", this.tileset, 0, 0);
 
         const tintLayer = this.add.graphics();
         tintLayer.fillStyle(0xf70539, 0.6);
         tintLayer.fillRect(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         
-        this.drsimi = this.map.createLayer("simi", this.simiTileset, 0, 0);
-        this.torta = this.map.createLayer("torta", this.tortaTileset, 0, 0).setScrollFactor(.8);
-        this.pipesLayer = this.map.createLayer("BackgroundMountain", this.tileset, 0, 0).setScrollFactor(.8);
-        this.sunLayer = this.map.createLayer("Sun", this.tileset, 0, 0);
-        this.waterFallsLayer = this.map.createLayer("backGroundWaterFalls", this.tileset, 0, 0).setScrollFactor(1);
-        this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
+
+
+        this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.foodtileset, 0, 0);
+        this.waterlayer = this.map.createLayer("waterlayer", this.tileset, 0, 0);
 
         this.groundLayer.setCollisionByProperty({ collides: true });
 
-        this.animatedTiles.init(this.map);
+      //  this.animatedTiles.init(this.map);
 
         this.coins = this.map.createFromObjects("Objects", {
             name: "coin",
@@ -119,17 +117,6 @@ class Platformer extends Phaser.Scene {
             frame: 131
         });
 
-        this.entrance = this.map.createFromObjects("Secret", {
-            name: "entrance",
-            key: "tilemap_sheet",
-            frame: 151
-        });
-
-        this.exit = this.map.createFromObjects("return", {
-            name: "exit",
-            key: "tilemap_sheet",
-            frame: 151
-        });
 
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.coinGroup = this.add.group(this.coins);
@@ -143,13 +130,8 @@ class Platformer extends Phaser.Scene {
         this.physics.world.enable(this.flag, Phaser.Physics.Arcade.STATIC_BODY);
         this.flagGroup = this.add.group(this.flag);
 
-        this.physics.world.enable(this.entrance, Phaser.Physics.Arcade.STATIC_BODY);
-        this.entranceGroup = this.add.group(this.entrance);
 
-        this.physics.world.enable(this.exit, Phaser.Physics.Arcade.STATIC_BODY);
-        this.exitGroup = this.add.group(this.exit);
-
-        my.sprite.player = this.physics.add.sprite(30, 345, "platformer_characters", "tile_0009.png");
+        my.sprite.player = this.physics.add.sprite(30, 660, "platformer_characters", "tile_0009.png");
         my.sprite.player.setCollideWorldBounds(true);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
@@ -168,16 +150,6 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.setScale(1, 1);
             this.sound.play("coinSound", { volume: 1 });
             this.scene.start("endScreen", { score: this.PlayerScore });
-        });
-
-        this.physics.add.overlap(my.sprite.player, this.entranceGroup, (obj1, obj2) => {
-            my.sprite.player.setPosition(2783, 695);
-            this.sound.play("coinSound", { volume: 1 });
-        });
-
-        this.physics.add.overlap(my.sprite.player, this.exitGroup, (obj1, obj2) => {
-            my.sprite.player.setPosition(2947, 366);
-            this.sound.play("coinSound", { volume: 1 });
         });
 
         this.physics.add.overlap(my.sprite.player, this.waterGroup, this.playerHitWater, null, this);
