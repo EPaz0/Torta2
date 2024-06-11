@@ -19,6 +19,7 @@ class Platformer extends Phaser.Scene {
         this.PARTICLE_VELOCITY = 50;
         this.SCALE = 2.0;
         this.ORIGINAL_SCALE = 1;
+        
     }
 
     createShield() {

@@ -42,6 +42,12 @@ class endScreen extends Phaser.Scene {
             wordWrap: { width: this.game.config.width }
         }).setOrigin(0.5);
 
+        this.add.text(centerX, centerY + 150, "Credits: Max Kirkhope, Enrique Paz Gonzalez", {
+            fontFamily: "'Black Ops One'",
+            fontSize: 30,
+            align: 'center',
+            wordWrap: { width: this.game.config.width }
+        }).setOrigin(0.5);
 
     }
 
