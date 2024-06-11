@@ -711,6 +711,115 @@
         }, 
         {
          "draworder":"topdown",
+         "id":23,
+         "name":"Enemy",
+         "objects":[
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":307,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":1894,
+                 "y":542
+                }, 
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":308,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":2075,
+                 "y":543
+                }, 
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":309,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":1711,
+                 "y":543
+                }, 
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":310,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":1567,
+                 "y":506
+                }, 
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":311,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":2606.5,
+                 "y":398.5
+                }, 
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":312,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":3153,
+                 "y":613.5
+                }, 
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":313,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":3345,
+                 "y":612
+                }, 
+                {
+                 "gid":294,
+                 "height":18,
+                 "id":314,
+                 "name":"enemy",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":229.833,
+                 "y":667.167
+                }],
+         "offsetx":-4.33333,
+         "offsety":2.33333,
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":10,
          "name":"Water",
          "objects":[
@@ -2027,8 +2136,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":23,
- "nextobjectid":307,
+ "nextlayerid":24,
+ "nextobjectid":316,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
@@ -3101,6 +3210,19 @@
                          "value":true
                         }]
                 }],
+         "tilewidth":18
+        }, 
+        {
+         "columns":6,
+         "firstgid":293,
+         "image":"..\/..\/..\/..\/Desktop\/CMPM120\/Platform - Torta\/assets\/tilemap-characters-packed.png",
+         "imageheight":119,
+         "imagewidth":122,
+         "margin":0,
+         "name":"tilemap-characters-packed",
+         "spacing":0,
+         "tilecount":36,
+         "tileheight":18,
          "tilewidth":18
         }],
  "tilewidth":18,
